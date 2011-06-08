@@ -1,6 +1,7 @@
+from collections import OrderedDict
 from django import template
 
-register = template.library()
+register = template.Library()
 
 SMASH_CONTEXT_NAME = 'smashed_scripts'
 
@@ -19,9 +20,16 @@ class SmashAddNode(template.Node):
 
     def render(self, context):
         if SMASH_CONTEXT_NAME not in context.render_context:
-            context.render_context[SMASH_CONTEXT_NAME] = []
+            context.render_context[SMASH_CONTEXT_NAME] = OrderedDict()
 
-        context.render_context[SMASH_CONTEXT_NAME].append(script_url)
+        smash_context = context.render_context[SMASH_CONTEXT_NAME]
+        block_context = context.get('block')
+
+        if block_context not in smash_context:
+            smash_context[block_context] = []
+
+        smash_context[block_context].append(self.script_url)
+
         return ''
 
 @register.tag
@@ -30,7 +38,5 @@ def smash_render(parser, token):
 
 class SmashRenderNode(template.Node):
     def render(self, context):
-        if SMASH_CONTEXT_NAME not in context.render_context:
-            return ''
-
-        return ','.join(context.render_context[SMASH_CONTEXT_NAME])
+        smash_context = context.render_context.get(SMASH_CONTEXT_NAME, {})
+        return ','.join([script for key in smash_context.keys()[::-1] for script in smash_context[key]])

@@ -1,3 +1,4 @@
+{% load smashed %}
 <!doctype html>
 <!--[if lt IE 7 ]> <html class="no-js ie6" lang="en"> <![endif]-->
 <!--[if IE 7 ]>    <html class="no-js ie7" lang="en"> <![endif]-->
@@ -44,6 +45,9 @@
       {% block footer %}{% endblock %}
     </footer>
   </div> <!-- eo #container -->
+
+  {% smash_add //ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js %}
+  {% smash_render %}
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
   <script>window.jQuery || document.write("<script src='{{ STATIC_URL }}js/jquery-1.6.1.min.js'>\x3C/script>")</script>
