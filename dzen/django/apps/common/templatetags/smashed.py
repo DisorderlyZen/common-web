@@ -19,8 +19,9 @@ class SmashAddNode(template.Node):
         self.script_url = script_url
 
     def render(self, context):
-        if SMASH_CONTEXT_NAME not in context.render_context:
-            context.render_context[SMASH_CONTEXT_NAME] = OrderedDict()
+        smash_context = context.render_context.get(SMASH_CONTEXT_NAME, OrderedDict())
+        #if SMASH_CONTEXT_NAME not in context.render_context:
+        #    context.render_context[SMASH_CONTEXT_NAME] = OrderedDict()
 
         smash_context = context.render_context[SMASH_CONTEXT_NAME]
         block_context = context.get('block')
@@ -39,4 +40,4 @@ def smash_render(parser, token):
 class SmashRenderNode(template.Node):
     def render(self, context):
         smash_context = context.render_context.get(SMASH_CONTEXT_NAME, {})
-        return ','.join([script for key in smash_context.keys()[::-1] for script in smash_context[key]])
+        return ','.join([script for key in reversed(smash_context) for script in smash_context[key]])
