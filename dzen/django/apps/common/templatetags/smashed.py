@@ -19,9 +19,8 @@ class SmashAddNode(template.Node):
         self.script_url = script_url
 
     def render(self, context):
-        smash_context = context.render_context.get(SMASH_CONTEXT_NAME, OrderedDict())
-        #if SMASH_CONTEXT_NAME not in context.render_context:
-        #    context.render_context[SMASH_CONTEXT_NAME] = OrderedDict()
+        if SMASH_CONTEXT_NAME not in context.render_context:
+            context.render_context[SMASH_CONTEXT_NAME] = OrderedDict()
 
         smash_context = context.render_context[SMASH_CONTEXT_NAME]
         block_context = context.get('block')
