@@ -32,11 +32,15 @@ class SmashAddNode(template.Node):
 
         return ''
 
-@register.tag
-def smash_render(parser, token):
-    return SmashRenderNode()
-
-class SmashRenderNode(template.Node):
-    def render(self, context):
+@register.inclusion_tag('smashed_client.html', takes_context=True)
+def smash_render(context):
         smash_context = context.render_context.get(SMASH_CONTEXT_NAME, {})
-        return ','.join([script for key in reversed(smash_context) for script in smash_context[key]])
+        return {
+                'api_key': '1234',
+                'resource_list': ','.join([script for key in reversed(smash_context) for script in smash_context[key]])
+    
+
+#class SmashRenderNode(template.Node):
+#    def render(self, context):
+#        smash_context = context.render_context.get(SMASH_CONTEXT_NAME, {})
+#        return ','.join([script for key in reversed(smash_context) for script in smash_context[key]])
