@@ -1,5 +1,6 @@
 from collections import OrderedDict
 from django import template
+from django.template.defaultfilters import escapejs
 
 register = template.Library()
 
@@ -34,10 +35,12 @@ class SmashAddNode(template.Node):
 
 @register.inclusion_tag('smashed_client.html', takes_context=True)
 def smash_render(context):
-        smash_context = context.render_context.get(SMASH_CONTEXT_NAME, {})
-        return {
-                'api_key': '1234',
-                'resource_list': ','.join([script for key in reversed(smash_context) for script in smash_context[key]])
+    smash_context = context.render_context.get(SMASH_CONTEXT_NAME, OrderedDict())
+    resource_list = ','.join(["'%s'" % escapejs(script) for key in reversed(smash_context) for script in smash_context[key]])
+    return {
+            'api_key': '1234',
+            'resource_list': resource_list
+            }
     
 
 #class SmashRenderNode(template.Node):

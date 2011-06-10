@@ -1,7 +1,9 @@
-<script>
-  var faf_options = {
-    'api_key': '{{ api_key }}',
-    'resources': [{{ resource_list }}]
-  };
+{% if resource_list %}
+  <script>
+    var faf_options = {
+      'api_key': '{{ api_key }}',
+      'resources': [{{ resource_list|safe }}]
+    };
+  </script>
   <script src="//static.wesumo.com/faf.js"></script>
-</script>
+{% endif %}
