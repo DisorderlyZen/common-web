@@ -46,7 +46,10 @@
     </footer>
   </div> <!-- eo #container -->
 
-  {% smash_add //ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js %}
+  {% block scripts %}
+    {% smash_add //ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js %}
+  {% endblock %}
+
   {% smash_render %}
 
   <!--[if lt IE 7 ]>

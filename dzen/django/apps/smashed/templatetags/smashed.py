@@ -24,26 +24,19 @@ class SmashAddNode(template.Node):
             context.render_context[SMASH_CONTEXT_NAME] = OrderedDict()
 
         smash_context = context.render_context[SMASH_CONTEXT_NAME]
-        block_context = context.get('block')
 
-        if block_context not in smash_context:
-            smash_context[block_context] = []
+        if self not in smash_context:
+            smash_context[self] = []
 
-        smash_context[block_context].append(self.script_url)
+        smash_context[self].append(self.script_url)
 
         return ''
 
 @register.inclusion_tag('smashed_client.html', takes_context=True)
 def smash_render(context):
     smash_context = context.render_context.get(SMASH_CONTEXT_NAME, OrderedDict())
-    resource_list = ','.join(["'%s'" % escapejs(script) for key in reversed(smash_context) for script in smash_context[key]])
+    resources = [script for key in smash_context for script in smash_context[key]]
     return {
             'api_key': '1234',
-            'resource_list': resource_list
+            'resources': resources
             }
-    
-
-#class SmashRenderNode(template.Node):
-#    def render(self, context):
-#        smash_context = context.render_context.get(SMASH_CONTEXT_NAME, {})
-#        return ','.join([script for key in reversed(smash_context) for script in smash_context[key]])

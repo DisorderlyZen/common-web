@@ -1,8 +1,12 @@
-{% if resource_list %}
+{% if resources %}
   <script>
     var faf_options = {
       'api_key': '{{ api_key }}',
-      'resources': [{{ resource_list|safe }}]
+      'resources': [
+        {% for resource in resources %}
+          '{{ resource|escapejs }}'{% if not forloop.last %},{% endif %}
+        {% endfor %}
+      ]
     };
   </script>
   <script src="//static.wesumo.com/faf.js"></script>
