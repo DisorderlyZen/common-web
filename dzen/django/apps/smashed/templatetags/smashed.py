@@ -1,5 +1,6 @@
 from collections import OrderedDict
 from django import template
+from django.template.context import RequestContext
 from django.template.defaultfilters import escapejs
 
 register = template.Library()
@@ -36,7 +37,7 @@ class SmashAddNode(template.Node):
 def smash_render(context):
     smash_context = context.render_context.get(SMASH_CONTEXT_NAME, OrderedDict())
     resources = [script for key in smash_context for script in smash_context[key]]
-    return {
+    return RequestContext(context['request'], {
             'api_key': '1234',
             'resources': resources
-            }
+            })
