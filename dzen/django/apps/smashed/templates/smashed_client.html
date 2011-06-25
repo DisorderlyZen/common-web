@@ -1,19 +1,25 @@
-{% if resources %}
-  {% if debug %}
-    {% for resource in resources %}
-      <script src="{{ resource }}"></script>
+{% if resource_set %}
+  {% if not debug %}
+    {% for resources in resource_set %}
+      {% for resource in resources %}
+        <script src="{{ resource }}"></script>
+      {% endfor %}
     {% endfor %}
   {% else %}
     <script>
-      var faf_options = {
+      var sts_options = {
         'api_key': '{{ api_key }}',
         'resources': [
-          {% for resource in resources %}
-            '{{ resource|escapejs }}'{% if not forloop.last %},{% endif %}
+          {% for resources in resource_set %}
+            [
+            {% for resource in resources %}
+              '{{ resource|escapejs }}'{% if not forloop.last %},{% endif %}
+            {% endfor %}
+            ]{% if not forloop.last %},{% endif %}
           {% endfor %}
         ]
       };
     </script>
-    <script src="//static.wesumo.com/faf.js"></script>
+    <script src="//s.wesumo.com/sts.js"></script>
   {% endif %}
 {% endif %}

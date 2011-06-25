@@ -22,9 +22,9 @@ class SmashAddNode(template.Node):
 
     def render(self, context):
         if SMASH_CONTEXT_NAME not in context.render_context:
-            context.render_context[SMASH_CONTEXT_NAME] = OrderedDict()
+            context.render_context[SMASH_CONTEXT_NAME] = [OrderedDict()]
 
-        smash_context = context.render_context[SMASH_CONTEXT_NAME]
+        smash_context = context.render_context[SMASH_CONTEXT_NAME][-1]
 
         if self not in smash_context:
             smash_context[self] = []
@@ -33,11 +33,24 @@ class SmashAddNode(template.Node):
 
         return ''
 
+@register.tag
+def smash_flush(parser, token):
+    return SmashFlushNode()
+
+class SmashFlushNode(template.Node):
+    def render(self, context):
+        context.render_context[SMASH_CONTEXT_NAME].append(OrderedDict())
+        return ''
+
 @register.inclusion_tag('smashed_client.html', takes_context=True)
 def smash_render(context):
-    smash_context = context.render_context.get(SMASH_CONTEXT_NAME, OrderedDict())
-    resources = [script for key in smash_context for script in smash_context[key]]
+    def resource_list(resources):
+        return [script for key in resources for script in resources[key]]
+
+    smash_context = context.render_context.get(SMASH_CONTEXT_NAME, [])
+    resource_set = [resource_list(resources) for resources in smash_context]
+
     return RequestContext(context['request'], {
             'api_key': '1234',
-            'resources': resources
+            'resource_set': resource_set
             })
