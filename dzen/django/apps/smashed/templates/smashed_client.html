@@ -20,6 +20,12 @@
         ]
       };
     </script>
-    <script src="//s.wesumo.com/sts.js"></script>
+    <script>
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = "//s.wesumo.com/client/sts.js";
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
   {% endif %}
 {% endif %}
