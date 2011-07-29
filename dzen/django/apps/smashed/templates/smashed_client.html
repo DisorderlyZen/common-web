@@ -1,5 +1,5 @@
 {% if resource_set %}
-  {% if not debug %}
+  {% if debug %}
     {% for resources in resource_set %}
       {% for resource in resources %}
         <script src="{{ resource }}"></script>
@@ -22,9 +22,9 @@
     </script>
     <script>
     (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = "//s.wesumo.com/client/sts.js";
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
+      s.src = '//s.wesumo.com/client/sts.js';
+      var st = document.getElementsByTagName('script')[0]; st.parentNode.insertBefore(s, st);
     })();
     </script>
   {% endif %}

@@ -6,16 +6,13 @@
 <!--[if (gte IE 9)|!(IE)]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta http-equiv="X-UA-Compatible" content="{% spaceless %}{% block x-ua-compatible %}IE=edge,chrome=1{% endblock %}{% endspaceless %}">
 
-  <title>{% block title %}{% endblock %}</title>
+  <title>{% spaceless %}{% block title %}{% endblock %}{% endspaceless %}</title>
 
   {% block meta %}
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   {% endblock %}
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!--
   <link rel="shortcut icon" href="/favicon.ico">
@@ -31,9 +28,7 @@
 
   {% block closing-head %}{% endblock %}
 </head>
-
 <body>
-
   <div id="container">
     <header>
       {% block header %}{% endblock %}
@@ -46,10 +41,12 @@
     </footer>
   </div> <!-- eo #container -->
 
+  {# Add default scripts that will show up on every site #}
   {% block scripts %}
     {% smash_add //ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js %}
   {% endblock %}
 
+  {# Render the wesumo smash client script tag #}
   {% smash_render %}
 
   <!--[if lt IE 7 ]>
@@ -63,6 +60,5 @@
     g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
     s.parentNode.insertBefore(g,s)}(document,"script"));
   </script>
-
 </body>
 </html>
