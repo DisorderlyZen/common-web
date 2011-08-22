@@ -9,13 +9,21 @@ register = template.Library()
 SMASH_CONTEXT_NAME = 'smashed_scripts'
 
 @register.tag
-def smash_add(parser, token):
+def smash_local(parser, token):
+    script_url = smash_parse(parser, token)
+    return SmashAddNode('%s%s' % (settings.STATIC_URL, script_url.lstrip('/')))
+
+@register.tag
+def smash_remote(parser, token):
+    return SmashAddNode(smash_parse(parser, token))
+
+def smash_parse(parser, token):
     try:
         tag_name, script_url = token.split_contents()
     except ValueError:
         raise template.TemplateSyntaxError('%r tag requires arguments' % token.contents.split()[0])
 
-    return SmashAddNode(script_url)
+    return script_url
 
 class SmashAddNode(template.Node):
     def __init__(self, script_url):
