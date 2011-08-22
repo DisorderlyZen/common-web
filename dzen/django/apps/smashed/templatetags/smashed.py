@@ -1,5 +1,6 @@
 from collections import OrderedDict
 from django import template
+from django.conf import settings
 from django.template.context import RequestContext
 from django.template.defaultfilters import escapejs
 
@@ -51,6 +52,6 @@ def smash_render(context):
     resource_set = [resource_list(resources) for resources in smash_context]
 
     return RequestContext(context['request'], {
-            'api_key': '1234',
+            'api_key': getattr(settings, 'WESUMO_APP_KEY', None),
             'resource_set': resource_set
             })
