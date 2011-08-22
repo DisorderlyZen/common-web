@@ -42,7 +42,7 @@ class SmashFlushNode(template.Node):
         context.render_context[SMASH_CONTEXT_NAME].append(OrderedDict())
         return ''
 
-@register.inclusion_tag('smashed_client.html', takes_context=True)
+@register.inclusion_tag('smashed/client.html', takes_context=True)
 def smash_render(context):
     def resource_list(resources):
         return [script for key in resources for script in resources[key]]
