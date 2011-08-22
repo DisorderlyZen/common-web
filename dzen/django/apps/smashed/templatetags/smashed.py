@@ -1,5 +1,6 @@
 from collections import OrderedDict
 from django import template
+from django.conf import settings
 from django.template.context import RequestContext
 from django.template.defaultfilters import escapejs
 
@@ -42,7 +43,7 @@ class SmashFlushNode(template.Node):
         context.render_context[SMASH_CONTEXT_NAME].append(OrderedDict())
         return ''
 
-@register.inclusion_tag('smashed_client.html', takes_context=True)
+@register.inclusion_tag('smashed/client.html', takes_context=True)
 def smash_render(context):
     def resource_list(resources):
         return [script for key in resources for script in resources[key]]
@@ -51,6 +52,6 @@ def smash_render(context):
     resource_set = [resource_list(resources) for resources in smash_context]
 
     return RequestContext(context['request'], {
-            'api_key': '1234',
+            'api_key': getattr(settings, 'WESUMO_APP_KEY', None),
             'resource_set': resource_set
             })
