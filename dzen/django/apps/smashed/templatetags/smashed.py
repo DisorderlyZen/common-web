@@ -1,65 +1,80 @@
 from collections import OrderedDict
 from django import template
 from django.conf import settings
-from django.template.context import RequestContext
-from django.template.defaultfilters import escapejs
+from django.template.context import Context
+from django.template.defaultfilters import stringfilter
 
 register = template.Library()
 
 SMASH_CONTEXT_NAME = 'smashed_scripts'
+SMASH_CONTEXT_API_KEY = 'smashed_scripts_api_key'
 
-@register.tag
-def smash_local(parser, token):
-    script_url = smash_parse(parser, token)
-    return SmashAddNode('%s%s' % (settings.STATIC_URL, script_url.lstrip('/')))
+@register.filter
+@stringfilter
+def strip_blank_lines(value):
+    return '\n'.join([line for line in value.split('\n') if line.strip()])
 
-@register.tag
-def smash_remote(parser, token):
-    return SmashAddNode(smash_parse(parser, token))
+@register.simple_tag(takes_context=True)
+def smash_local(context, url):
+    url = '%s%s' % (settings.STATIC_URL, url.lstrip('/'))
+    return smash_context(object(), context, url)
 
-def smash_parse(parser, token):
-    try:
-        tag_name, script_url = token.split_contents()
-    except ValueError:
-        raise template.TemplateSyntaxError('%r tag requires arguments' % token.contents.split()[0])
+@register.simple_tag(takes_context=True)
+def smash_remote(context, url):
+    return smash_context(object(), context, url)
 
-    return script_url
+def smash_context(self, context, script_url):
+    if SMASH_CONTEXT_NAME not in context.render_context:
+        context.render_context[SMASH_CONTEXT_NAME] = [OrderedDict()]
 
-class SmashAddNode(template.Node):
-    def __init__(self, script_url):
-        self.script_url = script_url
+    smash_context = context.render_context[SMASH_CONTEXT_NAME][-1]
 
-    def render(self, context):
-        if SMASH_CONTEXT_NAME not in context.render_context:
-            context.render_context[SMASH_CONTEXT_NAME] = [OrderedDict()]
+    if self not in smash_context:
+        smash_context[self] = []
 
-        smash_context = context.render_context[SMASH_CONTEXT_NAME][-1]
+    smash_context[self].append(script_url)
 
-        if self not in smash_context:
-            smash_context[self] = []
+    return ''
 
-        smash_context[self].append(self.script_url)
+@register.simple_tag(takes_context=True)
+def smash_flush(context):
+    context.render_context[SMASH_CONTEXT_NAME].append(OrderedDict())
+    return ''
 
+@register.simple_tag(takes_context=True)
+def smash_key(context, api_key):
+    context.render_context[SMASH_CONTEXT_API_KEY] = api_key
+    return ''
+
+@register.simple_tag(takes_context=True)
+def smash_render(context, var_name=None):
+    t = template.loader.get_template('smashed/client.html')
+    rendered_template = t.render(Context(render_context(context, var_name)))
+
+    if var_name:
+        context[var_name] = rendered_template
         return ''
 
-@register.tag
-def smash_flush(parser, token):
-    return SmashFlushNode()
+    return rendered_template
 
-class SmashFlushNode(template.Node):
-    def render(self, context):
-        context.render_context[SMASH_CONTEXT_NAME].append(OrderedDict())
-        return ''
-
-@register.inclusion_tag('smashed/client.html', takes_context=True)
-def smash_render(context):
+def render_context(context, var_name):
     def resource_list(resources):
         return [script for key in resources for script in resources[key]]
 
     smash_context = context.render_context.get(SMASH_CONTEXT_NAME, [])
     resource_set = [resource_list(resources) for resources in smash_context]
 
-    return RequestContext(context['request'], {
-            'api_key': getattr(settings, 'WESUMO_APP_KEY', None),
+    api_key = context.render_context.get(SMASH_CONTEXT_API_KEY, getattr(settings, 'WESUMO_APP_KEY', None))
+
+    if not api_key:
+        debug = True
+    elif var_name:
+        debug = False
+    else:
+        debug = getattr(settings, 'DEBUG', False)
+
+    return {
+            'api_key': api_key,
+            'debug': debug,
             'resource_set': resource_set
-            })
+            }

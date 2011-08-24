@@ -6,26 +6,26 @@
       {% endfor %}
     {% endfor %}
   {% else %}
-    <script>
-      var sts_options = {
-        'api_key': '{{ api_key }}',
-        'resources': [
-          {% for resources in resource_set %}
-            [
-            {% for resource in resources %}
-              '{{ resource|escapejs }}'{% if not forloop.last %},{% endif %}
-            {% endfor %}
-            ]{% if not forloop.last %},{% endif %}
-          {% endfor %}
-        ]
-      };
-    </script>
-    <script>
-    (function() {
-      var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
-      s.src = '//s.wesumo.com/client/sts.js';
-      var st = document.getElementsByTagName('script')[0]; st.parentNode.insertBefore(s, st);
-    })();
-    </script>
+<script>
+  var sts_options = {
+    'api_key': '{{ api_key }}',
+    'resources': [
+      {% for resources in resource_set %}
+        [
+        {% for resource in resources %}
+          '{{ resource|escapejs }}'{% if not forloop.last %},{% endif %}
+        {% endfor %}
+        ]{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ]
+  };
+</script>
+<script>
+(function() {
+  var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
+  s.src = '//s.wesumo.com/client/sts.js';
+  var st = document.getElementsByTagName('script')[0]; st.parentNode.insertBefore(s, st);
+})();
+</script>
   {% endif %}
 {% endif %}
