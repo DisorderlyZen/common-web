@@ -19,19 +19,19 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   -->
 
-  <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css?v=2">
-
-  {% block styles %}{% endblock %}
+  {% block styles %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css?v=2">
+  {% endblock %}
 
   {# Add default scripts that will show up on every site #}
   {% block scripts %}
     <script src="//ajax.cdnjs.com/ajax/libs/modernizr/1.7/modernizr-1.7.min.js"></script>
     <script>window.Modernizr || document.write('<script src="{{ STATIC_URL }}js/modernizr-1.7.min.js">\x3C/script>')</script>
-    {% smash_remote "//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js" %}
+    {% smash_remote_script "//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js" %}
   {% endblock %}
 
   {# Render the wesumo smash client script tag #}
-  {% smash_render %}
+  {% smash_render_scripts %}
 
   {% block closing-head %}{% endblock %}
 </head>
