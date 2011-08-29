@@ -23,8 +23,15 @@
 
   {% block styles %}{% endblock %}
 
-  <script src="//ajax.cdnjs.com/ajax/libs/modernizr/1.7/modernizr-1.7.min.js"></script>
-  <script>window.Modernizr || document.write('<script src="{{ STATIC_URL }}js/modernizr-1.7.min.js">\x3C/script>')</script>
+  {# Add default scripts that will show up on every site #}
+  {% block scripts %}
+    <script src="//ajax.cdnjs.com/ajax/libs/modernizr/1.7/modernizr-1.7.min.js"></script>
+    <script>window.Modernizr || document.write('<script src="{{ STATIC_URL }}js/modernizr-1.7.min.js">\x3C/script>')</script>
+    {% smash_remote "//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js" %}
+  {% endblock %}
+
+  {# Render the wesumo smash client script tag #}
+  {% smash_render %}
 
   {% block closing-head %}{% endblock %}
 </head>
@@ -41,30 +48,20 @@
     </footer>
   </div> <!-- eo #container -->
 
-  {# Add default scripts that will show up on every site #}
-  {% block scripts %}
-    {% smash_remote "//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js" %}
-  {% endblock %}
-
-  {# Render the wesumo smash client script tag #}
-  {% smash_render %}
-
   <!--[if lt IE 7 ]>
     <script src="{{ STATIC_URL }}js/dd_belatedpng.js"></script>
     <script>DD_belatedPNG.fix("img, .png_bg");</script>
   <![endif]-->
 
-  {% if not debug %}
-    <script>
-      var _gaq=[["_setAccount","{{ GOOGLE_ANALYTICS_ID }}"]];
-      {% block google-analytics-config %}
-        _gaq.push(["_trackPageview"]);
-      {% endblock %}
-      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
-      g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
-      s.parentNode.insertBefore(g,s)}(document,"script"));
-    </script>
-  {% endif %}
+  <script>
+    var _gaq=[["_setAccount","{{ GOOGLE_ANALYTICS_ID }}"]];
+    {% block google-analytics-config %}
+      _gaq.push(["_trackPageview"]);
+    {% endblock %}
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+    g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
+    s.parentNode.insertBefore(g,s)}(document,"script"));
+  </script>
 
   {% block closing-body %}{% endblock %}
 </body>
