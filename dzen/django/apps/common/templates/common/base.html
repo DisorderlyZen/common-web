@@ -20,8 +20,10 @@
   -->
 
   {% block styles %}
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css?v=2">
+    {% smash_local_style "css/style.css?v=2" %}
   {% endblock %}
+
+  {% smash_render_styles %}
 
   {# Add default scripts that will show up on every site #}
   {% block scripts %}

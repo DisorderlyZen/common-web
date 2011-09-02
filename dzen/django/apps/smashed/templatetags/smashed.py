@@ -70,8 +70,15 @@ def smash_key(context, api_key):
 
 @register.simple_tag(takes_context=True)
 def smash_render_scripts(context, var_name=None):
-    t = template.loader.get_template('smashed/client.html')
-    rendered_template = t.render(Context(render_context(context, var_name, SMASH_CONTEXT_SCRIPT)))
+    return smash_render_resources(context, var_name, 'smashed/scripts.html', SMASH_CONTEXT_SCRIPT)
+
+@register.simple_tag(takes_context=True)
+def smash_render_styles(context, var_name=None):
+    return smash_render_resources(context, var_name, 'smashed/styles.html', SMASH_CONTEXT_STYLE)
+
+def smash_render_resources(context, var_name, template_name, context_name):
+    t = template.loader.get_template(template_name)
+    rendered_template = t.render(render_context(context, var_name, context_name))
 
     if var_name:
         context[var_name] = rendered_template
@@ -95,8 +102,8 @@ def render_context(context, var_name, context_name):
     else:
         debug = getattr(settings, 'DEBUG', False)
 
-    return {
+    return Context({
             'api_key': api_key,
             'debug': debug,
             'resource_set': resource_set
-            }
+            })
