@@ -93,7 +93,7 @@ def render_context(context, var_name, context_name):
     smash_context = context.render_context.get(context_name, [])
     resource_set = [resource_list(resources) for resources in smash_context]
 
-    api_key = context.render_context.get(context_name, getattr(settings, 'WESUMO_APP_KEY', None))
+    api_key = context.render_context.get(SMASH_CONTEXT_API_KEY, getattr(settings, 'WESUMO_APP_KEY', None))
 
     if not api_key:
         debug = True
