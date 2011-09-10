@@ -100,10 +100,15 @@ def render_context(context, var_name, context_name):
     elif var_name:
         debug = False
     else:
-        debug = getattr(settings, 'DEBUG', False)
+        try:
+            debug = not getattr(settings, 'ENABLE_SMASHER')
+        except AttributeError:
+            debug = getattr(settings, 'DEBUG')
+
 
     return Context({
             'api_key': api_key,
             'debug': debug,
+            'smash_domain': getattr(settings, 'WESUMO_SMASH_URL', None),
             'resource_set': resource_set
             })
