@@ -2,7 +2,7 @@ from django import http
 from django.contrib.auth.decorators import login_required
 from django.utils import simplejson as json
 from django.utils.decorators import method_decorator
-from django.views.generic import TemplateView
+from django.views.generic import View
 
 def handler404(request):
     pass
@@ -10,12 +10,10 @@ def handler404(request):
 def handler500(request):
     pass
 
-class ProtectedView(TemplateView):
-    template_name = 'secret.html'
-
+class ProtectedViewMixin(object):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(ProtectedView, self).dispatch(*args, **kwargs)
+        return super(ProtectedViewMixin, self).dispatch(*args, **kwargs)
 
 class JSONResponseMixin(object):
     def render_to_response(self, context):
