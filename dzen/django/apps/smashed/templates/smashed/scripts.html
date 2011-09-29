@@ -9,6 +9,9 @@
 <script>
   var wesumo_options = {
     'api_key': '{{ api_key }}',
+    {% if smash_domain %}
+      'smash_domain': '{{ smash_domain }}',
+    {% endif %}
     'resources': [
       {% for resources in resource_set %}
         [
