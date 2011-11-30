@@ -1,70 +1,73 @@
 {% load smashed %}
-<!doctype html>
-<!--[if lt IE 7 ]> <html class="no-js ie6" lang="en"> <![endif]-->
-<!--[if IE 7 ]>    <html class="no-js ie7" lang="en"> <![endif]-->
-<!--[if IE 8 ]>    <html class="no-js ie8" lang="en"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="{% spaceless %}{% block x-ua-compatible %}IE=edge,chrome=1{% endblock %}{% endspaceless %}">
 
-  <title>{% spaceless %}{% block title %}{% endblock %}{% endspaceless %}</title>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="{% spaceless %}{% block x-ua-compatible %}IE=edge,chrome=1{% endblock %}{% endspaceless %}">
+        <title>{% spaceless %}{% block title %}{% endblock %}{% endspaceless %}</title>
+        
+        {% block meta %}
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% endblock %}
 
-  {% block meta %}
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  {% endblock %}
+        <!-- HTML5 shim, for IE6-8 support of HTML elements -->
+        <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
 
-  <!--
-  <link rel="shortcut icon" href="/favicon.ico">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  -->
+        <!-- styles -->
+        {% block styles %}
+            {% smash_local_style "css/style.css?v=2" %}
+            {% smash_remote_style "http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css" %}
+        {% endblock %}
 
-  {% block styles %}
-    {% smash_local_style "css/style.css?v=2" %}
-  {% endblock %}
+        {% smash_render_styles %}
+        
+        <style type="text/css"> 
+            body {
+                padding-top: 60px;
+            }
+        </style>
 
-  {% smash_render_styles %}
+        <!-- touch icons -->
+        <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+        
+        {# Add default scripts that will show up on every site #}
+        {% block scripts %}
+            {% smash_remote_script "//ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js" %}
+            {% smash_remote_script "//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" %}
+        {% endblock %}
 
-  {# Add default scripts that will show up on every site #}
-  {% block scripts %}
-    <script src="//ajax.cdnjs.com/ajax/libs/modernizr/1.7/modernizr-1.7.min.js"></script>
-    <script>window.Modernizr || document.write('<script src="{{ STATIC_URL }}js/modernizr-1.7.min.js">\x3C/script>')</script>
-    {% smash_remote_script "//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js" %}
-  {% endblock %}
+        {# Render the wesumo smash client script tag #}
+        {% smash_render_scripts %}
 
-  {# Render the wesumo smash client script tag #}
-  {% smash_render_scripts %}
+        {% block closing-head %}{% endblock %}
+    </head>
+    <body>
+        <header class="topbar">
+          {% block header %}{% endblock %}
+        </header>
+        <div class="container">
+            {% block content %}{% endblock %}
 
-  {% block closing-head %}{% endblock %}
-</head>
-<body>
-  <div id="container">
-    <header>
-      {% block header %}{% endblock %}
-    </header>
-    <div id="main" role="main">
-      {% block content %}{% endblock %}
-    </div>
-    <footer>
-      {% block footer %}{% endblock %}
-    </footer>
-  </div> <!-- eo #container -->
+            <footer>
+              {% block footer %}{% endblock %}
+            </footer>
+        </div> <!-- /container -->
+        
+        <script>
+            var _gaq=[["_setAccount","{{ GOOGLE_ANALYTICS_ID }}"]];
+            {% block google-analytics-config %}
+              _gaq.push(["_trackPageview"]);
+            {% endblock %}
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+            g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
+            s.parentNode.insertBefore(g,s)}(document,"script"));
+        </script>
 
-  <!--[if lt IE 7 ]>
-    <script src="{{ STATIC_URL }}js/dd_belatedpng.js"></script>
-    <script>DD_belatedPNG.fix("img, .png_bg");</script>
-  <![endif]-->
-
-  <script>
-    var _gaq=[["_setAccount","{{ GOOGLE_ANALYTICS_ID }}"]];
-    {% block google-analytics-config %}
-      _gaq.push(["_trackPageview"]);
-    {% endblock %}
-    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
-    g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
-    s.parentNode.insertBefore(g,s)}(document,"script"));
-  </script>
-
-  {% block closing-body %}{% endblock %}
-</body>
+        {% block closing-body %}{% endblock %}
+    </body>
 </html>
