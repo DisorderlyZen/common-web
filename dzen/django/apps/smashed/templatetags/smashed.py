@@ -3,12 +3,37 @@ from django import template
 from django.conf import settings
 from django.template.context import Context
 from django.template.defaultfilters import stringfilter
+from urlparse import urlparse
 
 register = template.Library()
 
-SMASH_CONTEXT_STYLE = 'smashed_context:style'
-SMASH_CONTEXT_SCRIPT = 'smashed_context:script'
-SMASH_CONTEXT_API_KEY = 'smashed_context:api_key'
+SMASH_STYLE_REL = 'stylesheet'
+SMASH_SCRIPT_REL = 'javascript'
+
+@register.simple_tag
+def smash_script(url):
+    return smash_resource(url, SMASH_SCRIPT_REL)
+
+@register.simple_tag
+def smash_style(url):
+    return smash_resource(url, SMASH_STYLE_REL)
+
+@register.simple_tag
+def smash_render(api_key, rel_type):
+    script_tag = '<script type="text/javascript" src="//s.wesumo.com/smash.min.js#key={}&type={}"></script>'
+    return script_tag.format(api_key, rel_type)
+
+def smash_resource(url, rel_type):
+    if is_relative_url(url):
+        url = settings.STATIC_URL + url.lstrip('/')
+
+    return build_smash_tag(url, rel_type)
+
+def is_relative_url(url):
+    return not urlparse(url).netloc
+
+def build_smash_tag(url, rel_type):
+    return '<link rel="{}/wesumo" href="{}" />'.format(rel_type, url)
 
 @register.simple_tag(takes_context=True)
 def smash_local_style(context, url):
