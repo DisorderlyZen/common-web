@@ -18,11 +18,11 @@
 
         <!-- styles -->
         {% block styles %}
-            {% smash_local_style "css/style.css?v=2" %}
-            {% smash_remote_style "http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css" %}
+            {% smash_style "css/style.css?v=2" %}
+            {% smash_style "http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css" %}
         {% endblock %}
 
-        {% smash_render_styles %}
+        {% smash_render "1234" "stylesheet" %}
         
         <style type="text/css"> 
             body {
@@ -37,12 +37,12 @@
         
         {# Add default scripts that will show up on every site #}
         {% block scripts %}
-            {% smash_remote_script "//ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js" %}
-            {% smash_remote_script "//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" %}
+            {% smash_script "//ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js" %}
+            {% smash_script "//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" %}
         {% endblock %}
 
         {# Render the wesumo smash client script tag #}
-        {% smash_render_scripts %}
+        {% smash_render "1234" "javascript" %}
 
         {% block closing-head %}{% endblock %}
     </head>
