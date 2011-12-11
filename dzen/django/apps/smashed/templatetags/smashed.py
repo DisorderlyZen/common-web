@@ -17,7 +17,7 @@ def smash_style(url):
 
 @register.simple_tag
 def smash_render(api_key, rel_type):
-    script_tag = '<script type="text/javascript" src="//s.wesumo.com/smash.min.js#key={}&type={}"></script>'
+    script_tag = '<script type="text/javascript" src="//smash.wesumo.com/client/smash.js#key={}&type={}"></script>'
     return script_tag.format(api_key, rel_type)
 
 def smash_resource(url, rel_type):
