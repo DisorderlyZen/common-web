@@ -34,8 +34,4 @@ class JSONResponseMixin(object):
 
     def convert_context_to_json(self, context):
         "Convert the context dictionary into a JSON object"
-        # Note: This is *EXTREMELY* naive; in reality, you'll need
-        # to do much more complex handling to ensure that arbitrary
-        # objects -- such as Django model instances or querysets
-        # -- can be serialized as JSON.
         return json.dumps(context)

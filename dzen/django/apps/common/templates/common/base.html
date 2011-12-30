@@ -18,8 +18,8 @@
 
         <!-- styles -->
         {% block styles %}
-            {% smash_style "css/style.css?v=2" %}
-            {% smash_style "http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css" %}
+            {% smash_style "css/bootstrap.css" %}
+            {% smash_style "css/style.css" %}
         {% endblock %}
 
         {% smash_render "1234" "stylesheet" %}
@@ -37,8 +37,8 @@
         
         {# Add default scripts that will show up on every site #}
         {% block scripts %}
-            {% smash_script "//ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js" %}
-            {% smash_script "//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" %}
+          {% smash_script "js/jquery-1.7.1.js" %}
+          {% smash_script "js/jquery-ui-1.8.16.custom.js" %}
         {% endblock %}
 
         {# Render the wesumo smash client script tag #}
