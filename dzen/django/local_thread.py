@@ -5,10 +5,9 @@ except ImportError:
 
 _thread_locals = local()
 
-@property
 def current_request():
     return getattr(_thread_locals, 'request', None)
 
 class LocalThreadRequestMiddleware(object):
-    def process_request(request):
+    def process_request(self, request):
         _thread_locals.request = request
