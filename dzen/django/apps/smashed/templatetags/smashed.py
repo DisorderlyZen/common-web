@@ -40,6 +40,6 @@ def build_smash_tag(url, rel_type):
     elif rel_type == SMASH_STYLE_REL:
         return '<link rel="{}" type="text/css" href="{}" />'.format(rel_type, url)
     elif rel_type == SMASH_SCRIPT_REL:
-        return '<script type="text/{}" href="{}"></script>'.format(rel_type, url)
+        return '<script type="text/{}" src="{}"></script>'.format(rel_type, url)
     else:
         return ''
