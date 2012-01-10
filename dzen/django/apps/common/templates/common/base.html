@@ -18,18 +18,11 @@
 
         <!-- styles -->
         {% block styles %}
-            {% smash_style "css/bootstrap.css" %}
-            {% smash_style "css/style.css" %}
+            {% smash_style "css/base.css" %}
         {% endblock %}
 
         {% smash_render "1234" "stylesheet" %}
         
-        <style type="text/css"> 
-            body {
-                padding-top: 60px;
-            }
-        </style>
-
         <!-- touch icons -->
         <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
         <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
@@ -47,16 +40,34 @@
         {% block closing-head %}{% endblock %}
     </head>
     <body>
-        <header class="topbar">
-          {% block header %}{% endblock %}
-        </header>
-        <div class="container">
+        <div id="nav_box">
+          <div class="main">
+            <header>
+              {% block header %}{% endblock %}
+              <div class="clear"></div>
+            </header>
+          </div>
+        </div>
+        <div id="top_box">
+          <div class="main">
+            {% block hero %}{% endblock %}
+          </div>
+        </div>
+        <div id="middle_box">
+          <div class="main">
             {% block content %}{% endblock %}
-
-            <footer>
+          </div>
+        </div>
+        <div id="bottom_box">
+          <div class="main">
+            {% block quicklinks %}{% endblock %}
+          </div>
+          <footer>
+            <div class="main">
               {% block footer %}{% endblock %}
-            </footer>
-        </div> <!-- /container -->
+            </div>
+          </footer>
+        </div>
         
         <script>
             var _gaq=[["_setAccount","{{ GOOGLE_ANALYTICS_ID }}"]];
