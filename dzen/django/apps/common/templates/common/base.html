@@ -23,12 +23,6 @@
         {% endblock %}
 
         {% smash_render "1234" "stylesheet" %}
-        
-        <style type="text/css"> 
-            body {
-                padding-top: 60px;
-            }
-        </style>
 
         <!-- touch icons -->
         <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
@@ -47,27 +41,28 @@
         {% block closing-head %}{% endblock %}
     </head>
     <body>
-        <header class="topbar">
-          {% block header %}{% endblock %}
-        </header>
-        <div class="container">
-            {% block content %}{% endblock %}
+      <header class="topbar">
+        {% block header %}{% endblock %}
+      </header>
 
-            <footer>
-              {% block footer %}{% endblock %}
-            </footer>
-        </div> <!-- /container -->
-        
-        <script>
-            var _gaq=[["_setAccount","{{ GOOGLE_ANALYTICS_ID }}"]];
-            {% block google-analytics-config %}
-              _gaq.push(["_trackPageview"]);
-            {% endblock %}
-            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
-            g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
-            s.parentNode.insertBefore(g,s)}(document,"script"));
-        </script>
+      <div class="container">
+        {% block content %}{% endblock %}
+      </div>
 
-        {% block closing-body %}{% endblock %}
+      <footer>
+        {% block footer %}{% endblock %}
+      </footer>
+      
+      <script>
+        var _gaq=[["_setAccount","{{ GOOGLE_ANALYTICS_ID }}"]];
+        {% block google-analytics-config %}
+          _gaq.push(["_trackPageview"]);
+        {% endblock %}
+        (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+        g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
+        s.parentNode.insertBefore(g,s)}(document,"script"));
+      </script>
+
+      {% block closing-body %}{% endblock %}
     </body>
 </html>
