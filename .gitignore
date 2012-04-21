@@ -2,3 +2,5 @@
 *.swp
 *.orig
 build/
+
+.DS_Store

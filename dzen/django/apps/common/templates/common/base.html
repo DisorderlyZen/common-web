@@ -2,63 +2,62 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="{% spaceless %}{% block x-ua-compatible %}IE=edge,chrome=1{% endblock %}{% endspaceless %}">
-        <title>{% spaceless %}{% block title %}{% endblock %}{% endspaceless %}</title>
-        
-        {% block meta %}
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        {% endblock %}
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="{% spaceless %}{% block x-ua-compatible %}IE=edge,chrome=1{% endblock %}{% endspaceless %}">
+    <title>{% spaceless %}{% block title %}{% endblock %}{% endspaceless %}</title>
+    
+    {% block meta %}
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% endblock %}
 
-        <!-- HTML5 shim, for IE6-8 support of HTML elements -->
-        <!--[if lt IE 9]>
-          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+    <!-- styles -->
+    {% block styles %}
+      {% smash_style "css/bootstrap.css" %}
+      {% smash_style "css/boostrap-responsive.css" %}
+      {% smash_style "css/style.css" %}
+    {% endblock %}
 
-        <!-- styles -->
-        {% block styles %}
-            {% smash_style "css/bootstrap.css" %}
-            {% smash_style "css/style.css" %}
-        {% endblock %}
+    {% smash_render "1234" "stylesheet" %}
 
-        {% smash_render "1234" "stylesheet" %}
+    <!-- touch icons -->
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+    
+    {# Add default scripts that will show up on every site #}
+    {% block scripts %}
+  	  <!--[if lt IE 9]>
+    		{% smash_script "js/html5.js" %}
+  	  <![endif]-->
+      {% smash_script "js/jquery-1.7.1.js" %}
+	    {% smash_script "js/bootstrap.js" %}
+    {% endblock %}
 
-        <!-- touch icons -->
-        <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-        <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
-        <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
-        
-        {# Add default scripts that will show up on every site #}
-        {% block scripts %}
-          {% smash_script "js/jquery-1.7.1.js" %}
-          {% smash_script "js/jquery-ui-1.8.16.custom.js" %}
-        {% endblock %}
+    {# Render the wesumo smash client script tag #}
+    {% smash_render "1234" "javascript" %}
 
-        {# Render the wesumo smash client script tag #}
-        {% smash_render "1234" "javascript" %}
+    {% block closing-head %}{% endblock %}
+  </head>
+  <body>
+    <header class="navbar navbar-fixed-top">
+      {% block header %}{% endblock %}
+    </header>
 
-        {% block closing-head %}{% endblock %}
-    </head>
-    <body>
-      <header class="topbar">
-        {% block header %}{% endblock %}
-      </header>
+    {% block content %}{% endblock %}
 
-      {% block content %}{% endblock %}
+    {% block footer %}{% endblock %}
+  
+    <script>
+      var _gaq=[["_setAccount","{{ GOOGLE_ANALYTICS_ID }}"]];
+      {% block google-analytics-config %}
+        _gaq.push(["_trackPageview"]);
+      {% endblock %}
+      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+      g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
+      s.parentNode.insertBefore(g,s)}(document,"script"));
+    </script>
 
-      {% block footer %}{% endblock %}
-      
-      <script>
-        var _gaq=[["_setAccount","{{ GOOGLE_ANALYTICS_ID }}"]];
-        {% block google-analytics-config %}
-          _gaq.push(["_trackPageview"]);
-        {% endblock %}
-        (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
-        g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
-        s.parentNode.insertBefore(g,s)}(document,"script"));
-      </script>
-
-      {% block closing-body %}{% endblock %}
-    </body>
+    {% block closing-body %}{% endblock %}
+  </body>
 </html>
